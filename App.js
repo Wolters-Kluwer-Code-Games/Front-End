@@ -1,103 +1,70 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Button, Text, StyleSheet } from "react-native";
 import { WebView } from 'react-native-webview';
 
 const App = () => {
 
-const handleChatBot = () => {
-  <View style={styles.container}>
-        <View style = {{ width:'100%', height:'100%'}}>
-          <WebView 
-            source={{ uri: 'https://workspacesportal-dev.wolterskluwer.com/' }} 
-            onLoad={console.log('Loaded!')}
-          />
-        </View> 
-  </View>  
-}
+  const [link, setLink] = useState(null);
+  
+  const handleChatBot = () => {
+    setLink('https://workspacesportal-dev.wolterskluwer.com/');
+  };
 
-const handleKnowledgeHub = () => {
-  <View style={styles.container}>
-    <View style = {{ width:'100%', height:'100%'}}>
-      <WebView 
-        source={{ uri: 'https://workspacesportal-dev.wolterskluwer.com/' }} 
-        onLoad={console.log('Loaded!')}
-      />
-    </View> 
-  </View> 
-}
+  const handleKnowledgeHub = () => {
+    setLink('https://wolterskluwer.sharepoint.com/sites/GBS-Portal');
+  };
 
-const handlePasswordReset = () => {
-<View style={styles.container}>
-    <View style = {{ width:'100%', height:'100%'}}>
-      <WebView 
-        source={{ uri: 'https://workspacesportal-dev.wolterskluwer.com/' }} 
-        onLoad={console.log('Loaded!')}
-      />
-    </View> 
-  </View> 
-}
+  const handlePasswordReset = () => {
+    setLink('https://passwordreset.microsoftonline.com');
+  };
 
-const handleWPTSSP = () => {
-<View style={styles.container}>
-    <View style = {{ width:'100%', height:'100%'}}>
-      <WebView 
-        source={{ uri: 'https://workspacesportal-dev.wolterskluwer.com/' }} 
-        onLoad={console.log('Loaded!')}
-      />
-    </View> 
-  </View>   
-}
+  const handleWPTSSP = () => {
+    setLink('https://workspacesportal-dev.wolterskluwer.com/');
+  };
 
-const handleOutages = () => {
-<View style={styles.container}>
-    <View style = {{ width:'100%', height:'100%'}}>
-      <WebView 
-        source={{ uri: 'https://twitter.com/MSFT365Status' }} 
-        onLoad={console.log('Loaded!')}
-      />
-    </View> 
-  </View>  
-}
+  const handleOutages = () => {
+    setLink('https://twitter.com/MSFT365Status');
+  }
 
   return (
-    <>
     <View style = {styles.screenContainer}>
-      <View style = {styles.button}>
+    <View style={styles.webContainer}>
+      <View style = {{ width:'100%', height:'100%'}}>
+        <WebView 
+          source={{ uri: link }} 
+          onLoad={console.log('Loaded ${link}')}
+        />
+      </View> 
+    </View>  
+    <View style = {styles.button}>
         <Button title="Chat Bot" color="green" onPress={handleChatBot} />
-      </View >
-      <View style = {styles.button}>
         <Button title="Knowledge Hub" color="#85BC20" onPress={handleKnowledgeHub}/>
-      </View>
-      <View style = {styles.button}>
         <Button title="Password Reset" color="#007AC3" onPress={handlePasswordReset}/>
-      </View>
-      <View style = {styles.button}>
         <Button title="WPT SSP" color="orange" onPress={handleWPTSSP} />
-      </View>
-      <View style = {styles.button}>
         <Button title="Outages" color="#E5202E" onPress={handleOutages}/>
-      </View>
     </View>   
-    </>    
+    </View>   
   );
 };
 
 const styles = StyleSheet.create({
-  screenContainer: {
-    justifyContent: "flex-end",
-    backgroundColor: "#474747",
-    flex:1
-  },
-  button: {
-    padding: 10
-  },
-  container: {
-    marginTop: 20,
+  webContainer: {
+    marginTop: 0,
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  screenContainer: {
+    marginTop: 20,
+    justifyContent: "flex-end",
+    backgroundColor: "#fff",
+    flex:1
+  },
+  button: {
+    padding: 10
+  },
+  
 });
 
 export default App;
