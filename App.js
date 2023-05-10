@@ -64,7 +64,7 @@ const handleButtonClick = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer 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"
+        "Authorization": "Bearer sk-3S04QemFQcRKI7rLxH4KT3BlbkFJG1NkPPahsihsis"
       },
         body: JSON.stringify({
         "messages": [{"role": "user", "content": inputMessage}],
@@ -126,17 +126,30 @@ else if(chat){
       </View>
       <StatusBar style="auto" />
     </View>;
-
 }
 else{
-  test=<View style = {styles.button}>
-    <Image source={require('./assets/logo.png')} style={{height:45, width:350, top:-270}} />
-    <Button title="My WK Account" color="#409BD2" onPress={handleMyAccount} />
-    <Button title="Chat Bot" color="#374F0E" onPress={handleChatBot} />
-    <Button title="GBS Resources" color="#85BC20" onPress={handleKnowledgeHub}/>
-    <Button title="Password Reset" color="#007AC3" onPress={handlePasswordReset}/>
-    <Button title="WPT Self Service Portal" color="#939393" onPress={handleWPTSSP} />
+  test=<View style = {styles.screenContainer}>
+    
+    <Image source={require('./assets/logo.png')} style={{height:50, width:380, top:-260}} />
+    <View style = {styles.button} >
+      <Button title="My WK Account" color="#409BD2" onPress={handleMyAccount} />
+    </View>
+    <View style = {styles.button}>
+      <Button title="Chat Bot" color="#374F0E" onPress={handleChatBot} />
+    </View> 
+    <View style = {styles.button}>
+      <Button title="GBS Resources" color="#85BC20" onPress={handleKnowledgeHub}/>
+    </View> 
+    <View style = {styles.button}>
+      <Button title="Password Reset" color="#007AC3" onPress={handlePasswordReset}/>
+    </View>
+    <View style = {styles.button}>
+      <Button title="WPT Self Service Portal" color="#939393" onPress={handleWPTSSP} />
+    </View>
+    <View style = {styles.button}>
     <Button title="M365 Outages" color="#E5202E" onPress={handleOutages}/>
+    </View>
+    
   </View>   ;
 }
 return (
@@ -156,12 +169,15 @@ screenContainer: {
   marginTop: 0, 
   justifyContent: "flex-end",  
   backgroundColor: "#fff",
-  flex:1
+  flex:1,
 },  
 button: {   
-  padding: 10, 
-  marginBottom:20  
-    },
+  padding: 3, 
+  margin:2,
+  marginLeft: 15,
+  marginRight: 15,
+  marginBottom: 3,
+  },
 });
   
 export default App;
