@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { View, Button, Text, StyleSheet, Image,TouchableOpacity ,TextInput} from "react-native";
+import { View, Button, Text, StyleSheet, Image,TouchableOpacity ,TextInput, Alert} from "react-native";
 import { WebView } from 'react-native-webview';
 import {MaterialIcons} from '@expo/vector-icons'
 import { GiftedChat } from 'react-native-gifted-chat';
 import { StatusBar } from 'expo-status-bar';
-
 
 const App = () => {
 
@@ -12,7 +11,12 @@ const App = () => {
   const [chat, setChat] = useState(null);
 
 const handleChatBot = () => {
-  setChat(true);
+  //setChat(true);
+  setLink('http://wk-companion-codegames-chatbot.s3-website-us-east-1.amazonaws.com')
+  Alert.alert(
+    'Notice',
+    'Please do not enter any confidential or personal information!',
+  );
 };
 
 const handleMyAccount = () => {
@@ -43,6 +47,7 @@ const BackHome = () => {
 const [messages, setMessages] = useState([])
 const [inputMessage, setInputMessage] = useState("")
 const [outputMessage, setOutputMessage] = useState("Results to be shown here")
+
 
 const handleButtonClick = () => {
   console.log(inputMessage)
@@ -85,11 +90,12 @@ const handleTextInput = (text) => {
   console.log(text)
   }
 
+
 let test;
 
 if (link){
   test = <View style={styles.webContainer}>
-  <Button  title="Click here to return to home screen" color="black" onPress={BackHome} style={{marginTop: 10}}/>
+  <Button  title="Click here to return to home screen" color="black" onPress={BackHome} />
   <View style = {{ width:'100%', height:'100%'}}>
     <WebView
       source={{ uri: link }}
@@ -98,16 +104,16 @@ if (link){
   </View>
   </View>  
 }
+
 else if(chat){
-  test =
-    <View style={{flex:1}}>
+  test = <View style={{flex:1}}>
     <Button  title="Click here to return to home screen" color="black" onPress={BackHome} />
       <View style={{flex:1, justifyContent:"center"}}>
         <GiftedChat messages={messages} renderInputToolbar={() => {}} user={{_id:1}} minInputToolbarHeight={0} />  
       </View>
       <View style = {{flexDirection:"row"}}>
         <View style={{flex:1, marginLeft:10, marginBottom:20, backgroundColor:"white",
-                      borderRadius: 10, borderColor: "grey", borderWidth: 1, height: 60, marginLeft: 10, marginRight: 10,
+                      borderRadius: 10, borderColor: "grey", borderWidth: 1, height: 60, marginRight: 10,
                       justifyContent: "center", paddingLeft: 10, paddingRight: 10}}>
           <TextInput placeholder='Please enter your question' onChangeText={handleTextInput}/>
         </View>
@@ -120,16 +126,17 @@ else if(chat){
       </View>
       <StatusBar style="auto" />
     </View>;
+
 }
 else{
   test=<View style = {styles.button}>
-    <Image source={require('./assets/teamsn.png')} style={{height:350, width:350, top:-100}} />
-    <Button title="My Account" color="darkblue" onPress={handleMyAccount} />
-    <Button title="Chat Bot" color="green" onPress={handleChatBot} />
-    <Button title="Knowledge Hub" color="#85BC20" onPress={handleKnowledgeHub}/>
+    <Image source={require('./assets/logo.png')} style={{height:45, width:350, top:-270}} />
+    <Button title="My WK Account" color="#409BD2" onPress={handleMyAccount} />
+    <Button title="Chat Bot" color="#374F0E" onPress={handleChatBot} />
+    <Button title="GBS Resources" color="#85BC20" onPress={handleKnowledgeHub}/>
     <Button title="Password Reset" color="#007AC3" onPress={handlePasswordReset}/>
-    <Button title="WPT SSP" color="orange" onPress={handleWPTSSP} />
-    <Button title="Outages" color="#E5202E" onPress={handleOutages}/>
+    <Button title="WPT Self Service Portal" color="#939393" onPress={handleWPTSSP} />
+    <Button title="M365 Outages" color="#E5202E" onPress={handleOutages}/>
   </View>   ;
 }
 return (
@@ -143,9 +150,7 @@ const styles = StyleSheet.create({
 webContainer: { 
   marginTop: 45, 
   flex: 1, 
-  backgroundColor: '#fff',  
-  //flexDirection: 'row-reverse',  
-  //justifyContent: 'left',  
+  backgroundColor: '#fff',   
 }, 
 screenContainer: {  
   marginTop: 0, 
@@ -153,11 +158,10 @@ screenContainer: {
   backgroundColor: "#fff",
   flex:1
 },  
-button: {  
-  //flex: 1, 
+button: {   
   padding: 10, 
   marginBottom:20  
     },
-  });
+});
   
 export default App;
