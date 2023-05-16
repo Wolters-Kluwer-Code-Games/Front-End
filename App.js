@@ -4,6 +4,7 @@ import { WebView } from 'react-native-webview';
 import {MaterialIcons} from '@expo/vector-icons'
 import { GiftedChat } from 'react-native-gifted-chat';
 import { StatusBar } from 'expo-status-bar';
+import { Linking } from "react-native";
 
 const App = () => {
 
@@ -19,12 +20,24 @@ const handleChatBot = () => {
   );
 };
 
+/*
 const handleMyAccount = () => {
   setLink('https://myaccount.microsoft.com');
 };
+*/
 
+const handleMyAccount = () => {
+  Linking.openURL('https://myaccount.microsoft.com')
+};
+
+/*
 const handleKnowledgeHub = () => {
   setLink('https://wolterskluwer.sharepoint.com/sites/GBS-Portal');
+};
+*/
+
+const handleKnowledgeHub = () => {
+  Linking.openURL('https://wolterskluwer.sharepoint.com/sites/GBS-Portal')
 };
 
 const handlePasswordReset = () => {
