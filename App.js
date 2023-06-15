@@ -210,10 +210,10 @@ const App = () => {
         {showMenu && (
           <Menu handleFavoriteButton={handleFavoriteButton} favorites={favorites} />
         )}
-        <Image source={require('./logo.png')} style={{ height: 50, width: 380, top: -350 }} /> 
+        <Image source={require('./assets/logo.png')} style={{ height: 50, width: 380, top: -350 }} /> 
         <View style={styles.chatBotIconContainer}>
           <TouchableOpacity onPress={handleChatBot}>
-            <Image source={require('./newbot.png')} style={styles.chatBotIcon} />
+            <Image source={require('./assets/newbot.png')} style={styles.chatBotIcon} />
           </TouchableOpacity>
         </View> 
       </View>
