@@ -1,196 +1,283 @@
 import React, { useState } from "react";
-import { View, Button, Text, StyleSheet, Image,TouchableOpacity ,TextInput, Alert} from "react-native";
+import { View, Button, Text, StyleSheet, Image, TouchableOpacity, TextInput, Alert } from "react-native";
 import { WebView } from 'react-native-webview';
-import {MaterialIcons} from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons';
 import { GiftedChat } from 'react-native-gifted-chat';
 import { StatusBar } from 'expo-status-bar';
 import { Linking } from "react-native";
+import { IconButton } from 'react-native-paper';
 
-const App = () => {
+const Menu = ({ handleFavoriteButton, favorites }) => {
+  const [showGBS, setShowGBS] = useState(false);
+  const [showHealth, setShowHealth] = useState(false);
+  const [showESG, setShowESG] = useState(false);
 
-  const [link, setLink] = useState(null);
-  const [chat, setChat] = useState(null);
+  const handleGBSButton = () => {
+    setShowGBS(!showGBS);
+  };
 
-const handleChatBot = () => {
-  //setChat(true);
-  setLink('http://wk-companion-codegames-chatbot.s3-website-us-east-1.amazonaws.com')
-  Alert.alert(
-    'Notice',
-    'Please do not enter any confidential or personal information!',
+  const handleHealthButton = () => {
+    setShowHealth(!showHealth);
+  }
+
+  const handleESGButton = () => {
+    setShowESG(!showESG);
+  }
+
+
+  return (
+    <View style={styles.menuContainer}>
+    
+      <TouchableOpacity onPress={handleGBSButton} style={[styles.menuItem, { backgroundColor: '#fffff'}]}>
+        <Text style={[styles.buttonText, { color: 'black' }]}>GBS</Text>
+      </TouchableOpacity>
+
+      {showGBS && (
+        <View style={styles.subMenuContainer}>
+          <TouchableOpacity onPress={() => handleFavoriteButton('MyWKAccount')} style={[styles.menuItem, favorites.includes('WKMyAccount') && styles.favoriteItem, { backgroundColor: '#409BD2'}]}>
+        <Text style={styles.buttonText}>My WK Account</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => handleFavoriteButton('GBSResources')} style={[styles.menuItem, favorites.includes('GBSResources') && styles.favoriteItem,  { backgroundColor: '#85BC20'}]}>
+            <Text style={styles.buttonText}> GBS Resources</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleFavoriteButton('PasswordReset')} style={[styles.menuItem, favorites.includes('PasswordReset') && styles.favoriteItem, {backgroundColor: '#007AC3'}]}>
+        <Text style={styles.buttonText}>Password Reset</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => handleFavoriteButton('WPTSSP')} style={[styles.menuItem, favorites.includes('WPTSSP') && styles.favoriteItem, {backgroundColor: '#939393'}]}>
+        <Text style={styles.buttonText}>WPT SelfService Portal</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => handleFavoriteButton('Outages')} style={[styles.menuItem, favorites.includes('Outages') && styles.favoriteItem, {backgroundColor: '#E5202E'}]}>
+        <Text style={styles.buttonText}>M365 Outages</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => handleFavoriteButton('PagerDuty')} style={[styles.menuItem, favorites.includes('PagerDuty') && styles.favoriteItem, {backgroundColor: 'purple'}]}>
+        <Text style={styles.buttonText}>Pager Duty</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => handleFavoriteButton('WorkDay')} style={[styles.menuItem, favorites.includes('WorkDay') && styles.favoriteItem, {backgroundColor: '#D59F22'}]}>
+        <Text style={styles.buttonText}>WorkDay</Text>
+      </TouchableOpacity>
+        </View>
+      )}
+
+    <TouchableOpacity onPress={handleHealthButton} style={[styles.menuItem, { backgroundColor: '#fffff'}]}>
+        <Text style={[styles.buttonText, { color: 'black' }]}>Health</Text>
+      </TouchableOpacity>
+
+      {showHealth && (
+        <View style={styles.subMenuContainer}>
+          <TouchableOpacity onPress={() => handleFavoriteButton('UpToDate')} style={[styles.menuItem, favorites.includes('UpToDate') && styles.favoriteItem, { backgroundColor: '#409BD2'}]}>
+        <Text style={styles.buttonText}>UpToDate</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => handleFavoriteButton('Ovid')} style={[styles.menuItem, favorites.includes('Ovid') && styles.favoriteItem,  { backgroundColor: '#85BC20'}]}>
+            <Text style={styles.buttonText}>Ovid</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      <TouchableOpacity onPress={handleESGButton} style={[styles.menuItem, { backgroundColor: '#fffff'}]}>
+        <Text style={[styles.buttonText, { color: 'black' }]}>ESG</Text>
+      </TouchableOpacity>
+
+      {showESG && (
+        <View style={styles.subMenuContainer}>
+          <TouchableOpacity onPress={() => handleFavoriteButton('OneSumX')} style={[styles.menuItem, favorites.includes('OneSumX') && styles.favoriteItem, { backgroundColor: '#409BD2'}]}>
+        <Text style={styles.buttonText}>OneSumX</Text>
+      </TouchableOpacity>
+        </View>
+      )}
+    </View>
   );
 };
 
-/*
-const handleMyAccount = () => {
-  setLink('https://myaccount.microsoft.com');
-};
-*/
+const App = () => {
+  const [link, setLink] = useState(null);
+  const [chat, setChat] = useState(null);
+  const [showMenu, setShowMenu] = useState(false);
+  const [favorites, setFavorites] = useState([]);
 
-const handleMyAccount = () => {
-  Linking.openURL('https://myaccount.microsoft.com')
-};
+  const handleFavoriteButton = (buttonName) => {
+    if (favorites.includes(buttonName)) {
+      setFavorites(favorites.filter((name) => name !== buttonName));
+    } else {
+      setFavorites([...favorites, buttonName]);
+    }
 
-/*
-const handleKnowledgeHub = () => {
-  setLink('https://wolterskluwer.sharepoint.com/sites/GBS-Portal');
-};
-*/
-
-const handleKnowledgeHub = () => {
-  Linking.openURL('https://wolterskluwer.sharepoint.com/sites/GBS-Portal')
-};
-
-const handlePasswordReset = () => {
-  setLink('https://passwordreset.microsoftonline.com');
-};
-  
-const handleWPTSSP = () => {
-  setLink('https://workspacesportal-dev.wolterskluwer.com/');
-};
-  
-const handleOutages = () => {
-  setLink('https://twitter.com/MSFT365Status');
-}
-
-const BackHome = () => {
-  setLink(null);
-  setChat(null);
-}
-
-const [messages, setMessages] = useState([])
-const [inputMessage, setInputMessage] = useState("")
-const [outputMessage, setOutputMessage] = useState("Results to be shown here")
-
-
-const handleButtonClick = () => {
-  console.log(inputMessage)
-  const message = {
-     _id: Math.random().toString(36).substring(7),
-    text: inputMessage,
-    createdAt: new Date(),
-    user: {_id:1}
-  }
-  setMessages((previousMessages) =>
-    GiftedChat.append(previousMessages, [message])
-  )
-    fetch("https://api.openai.com/v1/chat/completions",{
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer sk-3S04QemFQcRKI7rLxH4KT3BlbkFJG1NkPPahsihsis"
+    if (buttonName === 'MyWKAccount') {
+      Linking.openURL('https://myaccount.microsoft.com');
+    } else if (buttonName === 'ChatBot') {
+      Alert.alert(
+    'Notice',
+    'For confidential data and workplace support, use the "WK IT ServiceDesk". For general queries, use the chat bot. Click "Continue" to proceed.',
+    [
+      {
+        text: 'Connect to WK IT ServiceDesk',
+        onPress: () => {
+          Linking.openURL('https://teams.microsoft.com/l/chat/0/0?users=28:e87e3011-e8db-4cbf-bb35-2f25f54eb32c');
+          // Perform actions for chat bot option
+          // You can add your logic here for handling the chat bot
+        },
       },
-        body: JSON.stringify({
-        "messages": [{"role": "user", "content": inputMessage}],
-        "model": "gpt-3.5-turbo"
-    })
-    }).then((response) => response.json()).then((data) => {
-      console.log(data.choices[0].message.content)
-      setOutputMessage(data.choices[0].message.content.trim())
-      const message = {
-        _id: Math.random().toString(36).substring(7),
-        text: data.choices[0].message.content.trim(),
-        createdAt: new Date(),
-        user: {_id:2, name: "Wolters Kluwer"}
-      }
-        setMessages((previousMessages) =>
-        GiftedChat.append(previousMessages, [message])
-      )
-    })
+      {
+        text: 'Continue',
+        onPress: () => {
+          setLink('http://wk-companion-codegames-chatbot.s3-website-us-east-1.amazonaws.com');
+          // Perform any additional actions here after the user presses "Continue"
+        },
+      },
+    ],
+    { cancelable: false }
+    );
+    } else if (buttonName === 'GBSResources') {
+      Linking.openURL('https://gbs-Portal');
+    } else if (buttonName === 'PasswordReset') {
+      Linking.openURL('https://passwordreset.microsoftonline.com');
+    } else if (buttonName === 'WPTSSP') {
+      setLink('https://portalwer.com/');
+    } else if (buttonName === 'Outages') {
+      Linking.openURL('https://twitter.com/MSFT365Status');
+    } else if (buttonName === 'PagerDuty') {
+      Linking.openURL('https://test.com/incidents');
+    } else if (buttonName === 'WorkDay') {
+      Linking.openURL('https://wd3.myworkday.com/wk/d/home.htmld');
+    }
+  };
+
+  const handleToggleMenu = () => {
+    setShowMenu(!showMenu);
+  };
+
+  const handleChatBot = () => {
+    Alert.alert(
+    'Notice',
+    'For confidential data and workplace support, use the "WK IT ServiceDesk". For general queries, use the chat bot. Click "Continue" to proceed.',
+    [
+      {
+        text: 'Connect to WK IT ServiceDesk',
+        onPress: () => {
+          Linking.openURL('https://teams.microsoft.com/l/chat/0/0?users=28:e87e3011-e8db-4cbf-bb35-2f25f54eb32c');
+          // Perform actions for chat bot option
+          // You can add your logic here for handling the chat bot
+        },
+      },
+      {
+        text: 'Continue',
+        onPress: () => {
+          setLink('http://wk-companion-codegames-chatbot.s3-website-us-east-1.amazonaws.com');
+          // Perform any additional actions here after the user presses "Continue"
+        },
+      },
+    ],
+    { cancelable: false }
+    );
+  };
+
+  const BackHome = () => {
+    setLink(null);
+    setChat(null);
   }
 
-const handleTextInput = (text) => {
-  setInputMessage(text)
-  console.log(text)
-  }
+  let test;
 
-
-let test;
-
-if (link){
-  test = <View style={styles.webContainer}>
-  <Button  title="Click here to return to home screen" color="black" onPress={BackHome} />
-  <View style = {{ width:'100%', height:'100%'}}>
-    <WebView
-      source={{ uri: link }}
-      onLoad={console.log('Loaded ${link}')}
-    />
-  </View>
-  </View>  
-}
-
-else if(chat){
-  test = <View style={{flex:1}}>
-    <Button  title="Click here to return to home screen" color="black" onPress={BackHome} />
-      <View style={{flex:1, justifyContent:"center"}}>
-        <GiftedChat messages={messages} renderInputToolbar={() => {}} user={{_id:1}} minInputToolbarHeight={0} />  
-      </View>
-      <View style = {{flexDirection:"row"}}>
-        <View style={{flex:1, marginLeft:10, marginBottom:20, backgroundColor:"white",
-                      borderRadius: 10, borderColor: "grey", borderWidth: 1, height: 60, marginRight: 10,
-                      justifyContent: "center", paddingLeft: 10, paddingRight: 10}}>
-          <TextInput placeholder='Please enter your question' onChangeText={handleTextInput}/>
+  if (link) {
+    // WebView code here
+    test = (
+      <View style={styles.webContainer}>
+        <Button title="Click here to return to home screen" color="black" onPress={BackHome} />
+        <View style={{ width:'100%', height:'100%' }}>
+          <WebView
+            source={{ uri: link }}
+            onLoad={() => console.log(`Loaded ${link}`)}
+          />
         </View>
-        <TouchableOpacity onPress={handleButtonClick}>
-          <View style = {{backgroundColor:"green", padding:5, marginRight:10,marginBottom:20,
-                          borderRadius:100, width: 60, height: 60, justifyContent:"center"}}>
-            <MaterialIcons name="send" size={30} color="white" style = {{marginLeft:10}}/>
-          </View>
-        </TouchableOpacity>
+      </View>  
+    );
+  } else if (chat) {
+    test = (
+      <View style={{ flex: 1 }}>
+        <Button title="Click here to return to home screen" color="black" onPress={BackHome} />
+        <View style={{ flex: 1, justifyContent: "center" }}>
+          <GiftedChat messages={messages} renderInputToolbar={() => {}} user={{_id:1}} minInputToolbarHeight={0} />  
+        </View>
+        {/* Add input and send button */}
       </View>
+    );
+  } else {
+    test = (
+      <View style={styles.screenContainer}>
+        <TouchableOpacity onPress={handleToggleMenu} style={styles.menuButton}>
+          <MaterialIcons name="menu" size={24} color="black" />
+          <Text style={styles.menuButtonText}>Menu</Text>
+        </TouchableOpacity>
+        {showMenu && (
+          <Menu handleFavoriteButton={handleFavoriteButton} favorites={favorites} />
+        )}
+        <Image source={require('./logo.png')} style={{ height: 50, width: 380, top: -350 }} /> 
+        <View style={styles.chatBotIconContainer}>
+          <TouchableOpacity onPress={handleChatBot}>
+            <Image source={require('./newbot.png')} style={styles.chatBotIcon} />
+          </TouchableOpacity>
+        </View> 
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.container}>
+      {test}
       <StatusBar style="auto" />
-    </View>;
-}
-else{
-  test=<View style = {styles.screenContainer}>
-    
-    <Image source={require('./assets/logo.png')} style={{height:50, width:380, top:-260}} />
-    <View style = {styles.button} >
-      <Button title="My WK Account" color="#409BD2" onPress={handleMyAccount} />
     </View>
-    <View style = {styles.button}>
-      <Button title="Chat Bot" color="#374F0E" onPress={handleChatBot} />
-    </View> 
-    <View style = {styles.button}>
-      <Button title="GBS Resources" color="#85BC20" onPress={handleKnowledgeHub}/>
-    </View> 
-    <View style = {styles.button}>
-      <Button title="Password Reset" color="#007AC3" onPress={handlePasswordReset}/>
-    </View>
-    <View style = {styles.button}>
-      <Button title="WPT Self Service Portal" color="#939393" onPress={handleWPTSSP} />
-    </View>
-    <View style = {styles.button}>
-    <Button title="M365 Outages" color="#E5202E" onPress={handleOutages}/>
-    </View>
-    
-  </View>   ;
-}
-return (
-  <View style = {styles.screenContainer}>
-    {test}
-  </View>  
   );
 };
 
 const styles = StyleSheet.create({
-webContainer: { 
-  marginTop: 45, 
-  flex: 1, 
-  backgroundColor: '#fff',   
-}, 
-screenContainer: {  
-  marginTop: 0, 
-  justifyContent: "flex-end",  
-  backgroundColor: "#fff",
-  flex:1,
-},  
-button: {   
-  padding: 3, 
-  margin:2,
-  marginLeft: 15,
-  marginRight: 15,
-  marginBottom: 3,
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  buttonText: {
+    color: 'white',
+  },
+  screenContainer: {
+    marginTop: 0,
+    justifyContent: "flex-end",
+    backgroundColor: "#fff",
+    flex: 1,
+  },
+  menuButton: {
+    position: 'absolute',
+    top: 40,
+    left: 10,
+    zIndex: 1,
+    flexDirection: 'row',
+  },
+  menuContainer: {
+    position: 'absolute',
+    top: 50,
+    left: 10,
+    zIndex: 1,
+    backgroundColor: 'white',
+    padding: 10,
+    borderRadius: 5,
+  },
+  subMenuContainer: {
+    marginTop: 5,
+  },
+  menuItem: {
+    marginBottom: 7,
+    borderRadius: 5,
+    paddingLeft: 4,
+  },
+  menuButtonText: {
+    marginLeft: 4,
+  },
+  chatBotIconContainer: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+  },
+  chatBotIcon: {
+    width: 80,
+    height: 80,
   },
 });
-  
+
 export default App;
