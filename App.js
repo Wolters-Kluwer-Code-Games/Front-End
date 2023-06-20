@@ -6,6 +6,7 @@ import { GiftedChat } from 'react-native-gifted-chat';
 import { StatusBar } from 'expo-status-bar';
 import { Linking } from "react-native";
 import { IconButton } from 'react-native-paper';
+import * as Notifications from 'expo-notifications';
 
 const Menu = ({ handleFavoriteButton, favorites }) => {
   const [showGBS, setShowGBS] = useState(false);
@@ -28,7 +29,7 @@ const Menu = ({ handleFavoriteButton, favorites }) => {
   return (
     <View style={styles.menuContainer}>
     
-      <TouchableOpacity onPress={handleGBSButton} style={[styles.menuItem, { backgroundColor: '#fffff'}]}>
+      <TouchableOpacity onPress={handleGBSButton} style={[styles.submenuItem, { backgroundColor: '#fffff'}]}>
         <Text style={[styles.buttonText, { color: 'black' }]}>GBS</Text>
       </TouchableOpacity>
 
@@ -58,7 +59,7 @@ const Menu = ({ handleFavoriteButton, favorites }) => {
         </View>
       )}
 
-    <TouchableOpacity onPress={handleHealthButton} style={[styles.menuItem, { backgroundColor: '#fffff'}]}>
+    <TouchableOpacity onPress={handleHealthButton} style={[styles.submenuItem, { backgroundColor: '#fffff'}]}>
         <Text style={[styles.buttonText, { color: 'black' }]}>Health</Text>
       </TouchableOpacity>
 
@@ -73,7 +74,7 @@ const Menu = ({ handleFavoriteButton, favorites }) => {
         </View>
       )}
 
-      <TouchableOpacity onPress={handleESGButton} style={[styles.menuItem, { backgroundColor: '#fffff'}]}>
+      <TouchableOpacity onPress={handleESGButton} style={[styles.submenuItem, { backgroundColor: '#fffff'}]}>
         <Text style={[styles.buttonText, { color: 'black' }]}>ESG</Text>
       </TouchableOpacity>
 
@@ -87,6 +88,25 @@ const Menu = ({ handleFavoriteButton, favorites }) => {
     </View>
   );
 };
+
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
+
+Notifications.scheduleNotificationAsync({
+  content: {
+    title: "Password Expiring in 7 days!",
+    body: 'Use the Password Reset button to change the password before your expiration date!',
+  },
+  trigger: {
+    seconds: 10,
+  },
+});
 
 const App = () => {
   const [link, setLink] = useState(null);
@@ -119,7 +139,7 @@ const App = () => {
       {
         text: 'Continue',
         onPress: () => {
-          setLink('http://wk-companion-codegames-chatbot.s3-website-us-east-1.amazonaws.com');
+          setLink('http://test-bucket-cgapie.s3-website-us-east-1.amazonaws.com');
           // Perform any additional actions here after the user presses "Continue"
         },
       },
@@ -127,15 +147,15 @@ const App = () => {
     { cancelable: false }
     );
     } else if (buttonName === 'GBSResources') {
-      Linking.openURL('https://gbs-Portal');
+      Linking.openURL('https://wolterskluwer.sharepoint.com/sites/GBS-Portal');
     } else if (buttonName === 'PasswordReset') {
       Linking.openURL('https://passwordreset.microsoftonline.com');
     } else if (buttonName === 'WPTSSP') {
-      setLink('https://portalwer.com/');
+      setLink('https://workspacesportal-dev.wolterskluwer.com/');
     } else if (buttonName === 'Outages') {
       Linking.openURL('https://twitter.com/MSFT365Status');
     } else if (buttonName === 'PagerDuty') {
-      Linking.openURL('https://test.com/incidents');
+      Linking.openURL('https://wolterskluwer.pagerduty.com/incidents');
     } else if (buttonName === 'WorkDay') {
       Linking.openURL('https://wd3.myworkday.com/wk/d/home.htmld');
     }
@@ -161,7 +181,7 @@ const App = () => {
       {
         text: 'Continue',
         onPress: () => {
-          setLink('http://wk-companion-codegames-chatbot.s3-website-us-east-1.amazonaws.com');
+          setLink('http://test-bucket-cgapie.s3-website-us-east-1.amazonaws.com');
           // Perform any additional actions here after the user presses "Continue"
         },
       },
@@ -182,7 +202,7 @@ const App = () => {
     test = (
       <View style={styles.webContainer}>
         <Button title="Click here to return to home screen" color="black" onPress={BackHome} />
-        <View style={{ width:'100%', height:'100%' }}>
+        <View style={{ width:'100%', height:'100%'}}>
           <WebView
             source={{ uri: link }}
             onLoad={() => console.log(`Loaded ${link}`)}
@@ -194,7 +214,7 @@ const App = () => {
     test = (
       <View style={{ flex: 1 }}>
         <Button title="Click here to return to home screen" color="black" onPress={BackHome} />
-        <View style={{ flex: 1, justifyContent: "center" }}>
+        <View style={{ flex: 1, justifyContent: "center"}}>
           <GiftedChat messages={messages} renderInputToolbar={() => {}} user={{_id:1}} minInputToolbarHeight={0} />  
         </View>
         {/* Add input and send button */}
@@ -205,15 +225,15 @@ const App = () => {
       <View style={styles.screenContainer}>
         <TouchableOpacity onPress={handleToggleMenu} style={styles.menuButton}>
           <MaterialIcons name="menu" size={24} color="black" />
-          <Text style={styles.menuButtonText}>Menu</Text>
+          <Text style={styles.menuButtonText, {paddingTop:3}}>Menu</Text>
         </TouchableOpacity>
         {showMenu && (
           <Menu handleFavoriteButton={handleFavoriteButton} favorites={favorites} />
         )}
-        <Image source={require('./assets/logo.png')} style={{ height: 50, width: 380, top: -350 }} /> 
+        <Image source={require('./logo.png')} style={{ height: 50, width: 380, top: -350 }} /> 
         <View style={styles.chatBotIconContainer}>
           <TouchableOpacity onPress={handleChatBot}>
-            <Image source={require('./assets/newbot.png')} style={styles.chatBotIcon} />
+            <Image source={require('./newbot.png')} style={styles.chatBotIcon} />
           </TouchableOpacity>
         </View> 
       </View>
@@ -236,6 +256,11 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
   },
+  webContainer: {
+    marginTop: 40,
+    flex: 1,
+    backgroundColor: '#fff',
+  },
   screenContainer: {
     marginTop: 0,
     justifyContent: "flex-end",
@@ -251,8 +276,8 @@ const styles = StyleSheet.create({
   },
   menuContainer: {
     position: 'absolute',
-    top: 50,
-    left: 10,
+    top: 58,
+    left: 15,
     zIndex: 1,
     backgroundColor: 'white',
     padding: 10,
@@ -261,10 +286,18 @@ const styles = StyleSheet.create({
   subMenuContainer: {
     marginTop: 5,
   },
+  submenuItem: {
+    marginBottom: 1,
+    marginLeft: 5,
+    borderRadius: 2,
+    paddingLeft: 8,
+  },
   menuItem: {
-    marginBottom: 7,
-    borderRadius: 5,
-    paddingLeft: 4,
+    marginBottom: 1,
+    borderRadius: 2,
+    paddingLeft: 8,
+    marginLeft:20,
+    width:180,
   },
   menuButtonText: {
     marginLeft: 4,
@@ -278,6 +311,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
   },
+  
 });
 
 export default App;
