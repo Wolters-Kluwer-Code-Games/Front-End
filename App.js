@@ -6,7 +6,6 @@ import { GiftedChat } from 'react-native-gifted-chat';
 import { StatusBar } from 'expo-status-bar';
 import { Linking } from "react-native";
 import { IconButton } from 'react-native-paper';
-import * as Notifications from 'expo-notifications';
 
 const Menu = ({ handleFavoriteButton, favorites }) => {
   const [showGBS, setShowGBS] = useState(false);
@@ -89,25 +88,6 @@ const Menu = ({ handleFavoriteButton, favorites }) => {
   );
 };
 
-
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-  }),
-});
-
-Notifications.scheduleNotificationAsync({
-  content: {
-    title: "Password Expiring in 7 days!",
-    body: 'Use the Password Reset button to change the password before your expiration date!',
-  },
-  trigger: {
-    seconds: 10,
-  },
-});
-
 const App = () => {
   const [link, setLink] = useState(null);
   const [chat, setChat] = useState(null);
@@ -139,7 +119,7 @@ const App = () => {
       {
         text: 'Continue',
         onPress: () => {
-          setLink('http://test-bucket-cgapie.s3-website-us-east-1.amazonaws.com');
+          setLink('http://wk-companion-codegames-chatbot.s3-website-us-east-1.amazonaws.com/');
           // Perform any additional actions here after the user presses "Continue"
         },
       },
@@ -181,7 +161,7 @@ const App = () => {
       {
         text: 'Continue',
         onPress: () => {
-          setLink('http://test-bucket-cgapie.s3-website-us-east-1.amazonaws.com');
+          setLink('http://wk-companion-codegames-chatbot.s3-website-us-east-1.amazonaws.com/');
           // Perform any additional actions here after the user presses "Continue"
         },
       },
